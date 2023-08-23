@@ -11,45 +11,45 @@ Question 3: How much can we spend on acquiring new customers?
 
 Contains eight tables:
 
-The &quot;productslines&quot; table stores product category data with four columns. 
-The primary key is the &quot;product line&quot; and it is related to the &quot;producttable&quot; 
-through a one-to-many relationship based on the &quot;product line&quot; column.
+The "productslines" table stores product category data with four columns. 
+The primary key is the "product line" and it is related to the "producttable" 
+through a one-to-many relationship based on the "product line" column.
 
-The &quot;products&quot; table contains product information and has nine columns. 
-The primary key is the &quot;productCode&quot; and it has a foreign key relationship with the &quot;productlines&quot; 
-table through the &quot;productLine&quot; column, creating a many-to-one relationship. 
-Additionally, it is related to the &quot;orderdetails&quot; table through a one-to-one relationship based on the 
-&quot;productCode&quot; column.
+The "products" table contains product information and has nine columns. 
+The primary key is the "productCode" and it has a foreign key relationship with the "productlines" 
+table through the "productLine" column, creating a many-to-one relationship. 
+Additionally, it is related to the "orderdetails" table through a one-to-one relationship based on the 
+"productCode" column.
 
-The &quot;orderdetails&quot; table holds order-specific details with five columns. 
-The composite key is formed by the combination of &quot;orderNumber&quot; and &quot;productCode.&quot; 
-It has a one-to-one relationship with the &quot;products&quot; table based on the &quot;productCode&quot; column and another 
-one-to-one relationship with the &quot;order&quot; table based on the &quot;orderNumber&quot; column.
+The "orderdetails" table holds order-specific details with five columns. 
+The composite key is formed by the combination of "orderNumber" and "productCode." 
+It has a one-to-one relationship with the "products" table based on the "productCode" column and another 
+one-to-one relationship with the "order" table based on the "orderNumber" column.
 
-The &quot;orders&quot; table contains data related to received orders with seven columns. 
-The primary key is the &quot;orderNumber&quot; and it has a foreign key relationship with the &quot;customerNumber&quot; 
-from the &quot;customers&quot; table. 
-This relationship is one-to-one with the &quot;orderdetails&quot; table based on the &quot;orderNumber&quot; and a 
-many-to-one with the &quot;customers&quot; table based on the &quot;customerNumber&quot; column.
+The "orders" table contains data related to received orders with seven columns. 
+The primary key is the "orderNumber" and it has a foreign key relationship with the "customerNumber" 
+from the "customers" table. 
+This relationship is one-to-one with the "orderdetails" table based on the "orderNumber" and a 
+many-to-one with the "customers" table based on the "customerNumber" column.
 
-The &quot;customers&quot; table holds customer data with thirteen columns. The primary key is the &quot;customerNumber&quot; 
-and it has a foreign key relationship with the &quot;salesRepEmployeeNumber&quot; from the &quot;employees&quot; table. 
-This table has a one-to-many relationship with the &quot;orders&quot; table based on the &quot;customerNumber&quot; 
-a one-to-one relationship with the &quot;payments&quot; table based on the &quot;customerNumber&quot; 
-and a many-to-one relationship with the &quot;employees&quot; table based on the &quot;employeeNumber&quot; column.
+The "customers" table holds customer data with thirteen columns. The primary key is the "customerNumber" 
+and it has a foreign key relationship with the "salesRepEmployeeNumber" from the "employees" table. 
+This table has a one-to-many relationship with the "orders" table based on the "customerNumber" 
+a one-to-one relationship with the "payments" table based on the "customerNumber" 
+and a many-to-one relationship with the "employees" table based on the "employeeNumber" column.
 
-The &quot;payments&quot; table contains payment-related information with four columns. The composite key consists of 
-&quot;customerNumber&quot; and &quot;checkNumber.&quot; It has a one-to-one relationship with the &quot;customers&quot; table based on the 
-&quot;customerNumber&quot; column.
+The "payments" table contains payment-related information with four columns. The composite key consists of 
+"customerNumber" and "checkNumber." It has a one-to-one relationship with the "customers" table based on the 
+"customerNumber" column.
 
-The &quot;employees&quot; table stores employee data and has eight columns. The primary key is the &quot;employeeNumber&quot; 
-and it has a foreign key relationship with the &quot;officeCode&quot; from the &quot;offices&quot; table. 
-This table has a one-to-many self-referencing relationship between &quot;employeeNumber&quot; and &quot;reportsTo&quot; columns, 
-a one-to-many relationship with the &quot;customers&quot; table based on the &quot;salesRepEmployeeNumber&quot; 
-and a many-to-one relationship with the &quot;offices&quot; table based on the &quot;officeCode&quot; column.
+The "employees" table stores employee data and has eight columns. The primary key is the "employeeNumber" 
+and it has a foreign key relationship with the "officeCode" from the "offices" table. 
+This table has a one-to-many self-referencing relationship between "employeeNumber" and "reportsTo" columns, 
+a one-to-many relationship with the "customers" table based on the "salesRepEmployeeNumber" 
+and a many-to-one relationship with the "offices" table based on the "officeCode" column.
 
-The &quot;offices&quot; table contains office-related data and has nine columns. The primary key is the &quot;officeCode&quot; 
-and it has a one-to-many relationship with the &quot;employees&quot; table based on the &quot;officeCode&quot; column.*/
+The "offices" table contains office-related data and has nine columns. The primary key is the "officeCode" 
+and it has a one-to-many relationship with the "employees" table based on the "officeCode" column.*/
 
 -- SQL queries I will be executing to analyse the tables:
 SELECT 'Customers' AS table_name,
