@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/lepho/Downloads/stores.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3785"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,9:maincustomers"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="customers" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="118"/><column index="2" value="203"/><column index="3" value="121"/><column index="4" value="121"/><column index="5" value="119"/><column index="6" value="189"/><column index="7" value="145"/><column index="8" value="113"/><column index="9" value="79"/><column index="10" value="80"/><column index="11" value="81"/><column index="12" value="176"/><column index="13" value="76"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">/* Project: Customers and Products Analysis Using SQL
+
+Welcome to my project, where I will perform data analysis on a collection of scale model cars to derive key performance 
+indicators (KPIs) with the ultimate goal of making more informed and intelligent decisions.
+
+In this project, we will be answering these 3 questions:
+
+Question 1: Which products should we order more of or less of?
+Question 2: How should we tailor marketing and communication strategies to customer behaviors?
+Question 3: How much can we spend on acquiring new customers?
+
+Contains eight tables:
+
+The &quot;productslines&quot; table stores product category data with four columns. 
+The primary key is the &quot;product line&quot; and it is related to the &quot;producttable&quot; 
+through a one-to-many relationship based on the &quot;product line&quot; column.
+
+The &quot;products&quot; table contains product information and has nine columns. 
+The primary key is the &quot;productCode&quot; and it has a foreign key relationship with the &quot;productlines&quot; 
+table through the &quot;productLine&quot; column, creating a many-to-one relationship. 
+Additionally, it is related to the &quot;orderdetails&quot; table through a one-to-one relationship based on the 
+&quot;productCode&quot; column.
+
+The &quot;orderdetails&quot; table holds order-specific details with five columns. 
+The composite key is formed by the combination of &quot;orderNumber&quot; and &quot;productCode.&quot; 
+It has a one-to-one relationship with the &quot;products&quot; table based on the &quot;productCode&quot; column and another 
+one-to-one relationship with the &quot;order&quot; table based on the &quot;orderNumber&quot; column.
+
+The &quot;orders&quot; table contains data related to received orders with seven columns. 
+The primary key is the &quot;orderNumber&quot; and it has a foreign key relationship with the &quot;customerNumber&quot; 
+from the &quot;customers&quot; table. 
+This relationship is one-to-one with the &quot;orderdetails&quot; table based on the &quot;orderNumber&quot; and a 
+many-to-one with the &quot;customers&quot; table based on the &quot;customerNumber&quot; column.
+
+The &quot;customers&quot; table holds customer data with thirteen columns. The primary key is the &quot;customerNumber&quot; 
+and it has a foreign key relationship with the &quot;salesRepEmployeeNumber&quot; from the &quot;employees&quot; table. 
+This table has a one-to-many relationship with the &quot;orders&quot; table based on the &quot;customerNumber&quot; 
+a one-to-one relationship with the &quot;payments&quot; table based on the &quot;customerNumber&quot; 
+and a many-to-one relationship with the &quot;employees&quot; table based on the &quot;employeeNumber&quot; column.
+
+The &quot;payments&quot; table contains payment-related information with four columns. The composite key consists of 
+&quot;customerNumber&quot; and &quot;checkNumber.&quot; It has a one-to-one relationship with the &quot;customers&quot; table based on the 
+&quot;customerNumber&quot; column.
+
+The &quot;employees&quot; table stores employee data and has eight columns. The primary key is the &quot;employeeNumber&quot; 
+and it has a foreign key relationship with the &quot;officeCode&quot; from the &quot;offices&quot; table. 
+This table has a one-to-many self-referencing relationship between &quot;employeeNumber&quot; and &quot;reportsTo&quot; columns, 
+a one-to-many relationship with the &quot;customers&quot; table based on the &quot;salesRepEmployeeNumber&quot; 
+and a many-to-one relationship with the &quot;offices&quot; table based on the &quot;officeCode&quot; column.
+
+The &quot;offices&quot; table contains office-related data and has nine columns. The primary key is the &quot;officeCode&quot; 
+and it has a one-to-many relationship with the &quot;employees&quot; table based on the &quot;officeCode&quot; column.*/
+
+-- SQL queries I will be executing to analyse the tables:
+SELECT 'Customers' AS table_name,
+	   13 AS number_of_attributes,
+	   COUNT(*) AS number_of_rows
+  FROM customers
+ UNION
+SELECT 'Products' AS table_name,
+	   9 AS number_of_attributes,
+	   COUNT(*) AS number_of_rows
+  FROM products
+ UNION 
+SELECT 'ProductLines' AS table_name,
+	   4 AS number_of_attributes,
+	   COUNT(*) AS number_of_rows
+  FROM productlines
+ UNION
+SELECT 'Orders' AS table_name,
+	   7 AS number_of_attributes,
+	   COUNT(*) AS number_of_rows
+  FROM orders
+ UNION
+SELECT 'OrderDetails' AS table_name,
+	   5 AS number_of_attributes,
+	   COUNT(*) AS number_of_rows
+  FROM orderdetails
+ UNION
+SELECT 'Payments' AS table_name,
+	   4 AS number_of_attributes,
+	   COUNT(*) AS number_of_rows
+  FROM payments
+ UNION
+SELECT 'Employees' AS table_name,
+	   8 AS number_of_attributes,
+	   COUNT(*) AS number_of_rows
+  FROM employees
+ UNION
+SELECT 'Offices' AS table_name,
+	   9 AS number_of_attributes,
+	   COUNT(*) AS number_of_rows
+  FROM offices;
+
+-- Question 1: Which products should we order more of or less of?
+  
+-- Write a query to compute the low stock for each product using a correlated subquery.
+SELECT productcode, ROUND(SUM(quantityOrdered) / (SELECT quantityInStock
+													FROM products p
+												   WHERE od.productcode = p.productCode), 2) AS low_stock
+  FROM orderdetails od
+ GROUP BY productCode
+ LIMIT 10;  
+
+ -- Write a query to compute the product performance for each product.  
+SELECT productCode, SUM(quantityOrdered * priceEach) AS productPerformance
+  FROM orderdetails
+ GROUP BY productCode
+ LIMIT 10;
+
+ -- Combine the previous queries using a Common Table Expression (CTE) to display priority products for restocking using the IN operator.
+WITH low_stock_products AS (
+SELECT productCode, ROUND(SUM(quantityOrdered) / (SELECT quantityInStock
+												    FROM products p
+												   WHERE p.productCode = od.productCode), 2) AS low_stock
+  FROM orderdetails od
+ GROUP BY productCode
+ LIMIT 10
+)
+
+SELECT od.productCode, pr.productName, pr.productLine, SUM(od.quantityOrdered * od.priceEach) AS productPerformance
+  FROM products pr
+  JOIN orderdetails od
+    ON pr.productCode = od.productCode
+ WHERE od.productCode IN (SELECT productCode
+						    FROM low_stock_products)
+ GROUP BY od.productcode
+ ORDER BY productPerformance DESC
+ LIMIT 10;
+
+-- Question 2: How Should We Match Marketing and Communication Strategies to Customer Behavior?
+ 
+/* Write a query to join the products, orders, and orderdetails tables to have customers and products 
+   information in the same place.*/
+SELECT o.customerNumber, SUM(quantityOrdered * (priceEach - buyPrice)) AS customer_profit
+  FROM orders o
+  JOIN orderdetails od
+    ON o.orderNumber = od.orderNumber
+  JOIN products p
+    ON od.productCode = p.productCode
+ GROUP BY customerNumber;
+ 
+-- Write a query to find the top five VIP customers.
+WITH customer_profit AS (
+SELECT o.customerNumber, SUM(quantityOrdered * (priceEach - buyPrice)) AS profit
+  FROM orders o
+  JOIN orderdetails od
+    ON o.orderNumber = od.orderNumber
+  JOIN products p
+    ON od.productCode = p.productCode
+ GROUP BY customerNumber
+)
+SELECT contactLastName, contactFirstName, city, country, cp.profit
+  FROM customers c
+  JOIN customer_profit cp
+    ON c.customerNumber = cp.customerNumber
+ ORDER BY profit DESC
+ LIMIT 5;
+ 
+-- Similar to the previous query, write a query to find the top five least-engaged customers.
+WITH customer_profit AS (
+SELECT o.customerNumber, SUM(quantityOrdered * (priceEach - buyPrice)) AS profit
+  FROM orders o
+  JOIN orderdetails od
+    ON o.orderNumber = od.orderNumber
+  JOIN products p
+    ON od.productCode = p.productCode
+ GROUP BY customerNumber
+)
+SELECT contactLastName, contactFirstName, city, country, cp.profit
+  FROM customers c
+  JOIN customer_profit cp
+    ON c.customerNumber = cp.customerNumber
+ ORDER BY profit 
+ LIMIT 5;
+
+-- Question 3: How Much Can We Spend on Acquiring New Customers? 
+ 
+-- Write a query to compute the average of customer profits using the CTE on the previous screen.
+WITH customer_profit AS (
+SELECT o.customerNumber, SUM(quantityOrdered * (priceEach - buyPrice)) AS profit
+  FROM orders o
+  JOIN orderdetails od
+    ON o.orderNumber = od.orderNumber
+  JOIN products p
+    ON od.productCode = p.productCode
+ GROUP BY customerNumber
+)
+SELECT AVG(cp.profit) AS LTV
+  FROM customer_profit cp;
+
+/*
+Conclusion: 
+
+Question 1: Which products should we order more of or less of?
+
+Answer 1: Upon reviewing the findings and contrasting low stock with the best-performing products, 
+it is evident that the classic cars category warrants frequent restocking. 
+This conclusion is drawn from the fact that classic cars appear 5 times among the top 10 highest-performing 
+products.
+
+Question 2: How should we match marketing and communication strategies to customer behaviors?
+
+Answer 2: After examining the profit generated by the top and lowest customers, 
+it is recommended to implement loyalty rewards and enhanced services for the top-performing customers 
+to ensure their retention. On the other hand, for the lower-performing customers, conducting surveys 
+would be beneficial to gain insights into their needs and expectations from the company. 
+This valuable information can be used to devise effective strategies to attract new customers.
+
+Question 3: How Much Can We Spend on Acquiring New Customers?
+
+Answer 3: 
+With an average customer lifetime value of £39,040, we can deduce that each new customer will yield a profit 
+of the same amount. With this data, the company can now plan and allocate funds for new customer acquisition.
+
+PROJECT COMPLETE
+
+*/</sql><current_tab id="0"/></tab_sql></sqlb_project>
